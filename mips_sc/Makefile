@@ -44,6 +44,7 @@ all: $(TESTCASE_BUILD_DIR)$(USER_PROGRAM).bin $(TESTCASE_BUILD_DIR)$(USER_PROGRA
 
 
 $(TESTCASE_BUILD_DIR)$(USER_PROGRAM).o: $(TESTCASE_SRC_DIR)$(USER_PROGRAM).S
+	@mkdir -p $(TESTCASE_BUILD_DIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(TESTCASE_BUILD_DIR)$(USER_PROGRAM): default.ld $(OBJECTS)
@@ -63,5 +64,5 @@ convert: convert.c
 	gcc $< -o $@
 
 clean:
-	cd $(TESTCASE_BUILD_DIR) && rm -f *
+	rm -R $(TESTCASE_BUILD_DIR)
 	cd .. && rm entry
