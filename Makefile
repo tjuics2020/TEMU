@@ -38,9 +38,11 @@ export	BUILD_DIR
 $(BUILD_DIR)$(TEMU_TARGET): 
 	@mkdir -p $(BUILD_DIR)
 	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $(SRCS)
+	@git commit --allow-empty -m "compile"
 
 run: $(BUILD_DIR)$(TEMU_TARGET)
 	@./$(BUILD_DIR)$(TEMU_TARGET) $(USER_PROGRAM)
+	@git commit --allow-empty -m "run"
 
 clean:
 	rm -r $(BUILD_DIR)
