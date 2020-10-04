@@ -15,7 +15,7 @@ DEBUG := false
 
 # Compilation flags
 CC := gcc
-CFLAGS := -I$(INCLUDE_DIR) -Wall
+CFLAGS := -I$(INCLUDE_DIR) -I$(INCLUDE_DIR)/cpu -I$(INCLUDE_DIR)/memory -I$(INCLUDE_DIR)/monitor -Wall -Werror
 LDFLAGS := -lreadline
 
 # Files to be compiled
@@ -38,11 +38,11 @@ export	BUILD_DIR
 $(BUILD_DIR)$(TEMU_TARGET): 
 	@mkdir -p $(BUILD_DIR)
 	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $(SRCS)
-	@git commit --allow-empty -m "compile"
+	@git commit --allow-empty -q -m "compile"
 
 run: $(BUILD_DIR)$(TEMU_TARGET)
 	@./$(BUILD_DIR)$(TEMU_TARGET) $(USER_PROGRAM)
-	@git commit --allow-empty -m "run"
+	@git commit --allow-empty -q -m "run"
 
 clean:
 	rm -r $(BUILD_DIR)

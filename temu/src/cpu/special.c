@@ -24,7 +24,7 @@ make_helper(inv) {
 /* stop temu */
 make_helper(temu_trap) {
 
-	printf("\33[1;31mtemu: HIT GOOD TRAP\33[0m at pc = 0x%08x\n\n", cpu.pc);
+	printf("\33[1;31mtemu: HIT GOOD TRAP\33[0m at $pc = 0x%08x\n\n", cpu.pc);
 
 	temu_state = END;
 

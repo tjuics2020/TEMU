@@ -36,17 +36,6 @@ static int cmd_q(char *args) {
 	return -1;
 }
 
-static int cmd_info(char *args) {
-        char *arg = strtok(NULL, " ");
-
-        if(arg != NULL) {
-                if(strcmp(arg, "r") == 0) {
-                        display_reg();
-                }
-        }
-        return 0;
-}
-
 static int cmd_help(char *args);
 
 static struct {
@@ -56,8 +45,7 @@ static struct {
 } cmd_table [] = {
 	{ "help", "Display informations about all supported commands", cmd_help },
 	{ "c", "Continue the execution of the program", cmd_c },
-	{ "q", "Exit TEMU", cmd_q },
-	{ "info", "Display all the registers", cmd_info }
+	{ "q", "Exit TEMU", cmd_q }
 
 	/* TODO: Add more commands */
 

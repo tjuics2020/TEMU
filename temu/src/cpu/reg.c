@@ -11,6 +11,6 @@ void display_reg() {
                 printf("%s\t\t0x%08x\t\t%d\n", regfile[i], cpu.gpr[i]._32, cpu.gpr[i]._32);
         }
 
-        printf("%s\t\t0x%08x\t\t%d\n", "pc", cpu.pc, cpu.pc);
+        printf("%s\t\t0x%08x\t\t%d\n", "$pc", cpu.pc, cpu.pc);
 }
 

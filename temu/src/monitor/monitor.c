@@ -6,7 +6,8 @@ char *exec_file;
 uint8_t *hw_mem;
 CPU_state cpu;
 
-//void init_wp_pool();
+void init_regex();
+void init_wp_pool();
 void init_ddr3();
 
 FILE *log_fp = NULL;
@@ -27,6 +28,12 @@ void init_monitor(int argc, char *argv[]) {
 	/* Open the log file. */
 	exec_file = argv[1];
 	init_log();
+
+	/* Compile the regular expressions. */
+	init_regex();
+
+	/* Initialize the watchpoint pool. */
+	init_wp_pool();
 
 	/* Display welcome message. */
 	welcome();
