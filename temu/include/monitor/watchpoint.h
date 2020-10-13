@@ -8,7 +8,8 @@ typedef struct watchpoint {
 	struct watchpoint *next;
 
 	/* TODO: Add more members if necessary */
-
+        int isEmpty;
+        //表达式
 
 } WP;
 

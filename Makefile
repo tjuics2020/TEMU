@@ -37,7 +37,7 @@ export	BUILD_DIR
 
 $(BUILD_DIR)$(TEMU_TARGET): 
 	@mkdir -p $(BUILD_DIR)
-	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $(SRCS)
+	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $(SRCS) /usr/lib/x86_64-linux-gnu/libreadline.so
 	@git commit --allow-empty -q -m "compile"
 
 run: $(BUILD_DIR)$(TEMU_TARGET)
