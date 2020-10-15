@@ -7,7 +7,7 @@
 #include <regex.h>
 
 enum {
-	NOTYPE = 256, EQ
+	NOTYPE = 256, EQ,REG,NUM
 
 	/* TODO: Add more token types */
 
@@ -24,7 +24,10 @@ static struct rule {
 
 	{" +",	NOTYPE},				// spaces
 	{"\\+", '+'},					// plus
-	{"==", EQ}						// equal
+	{"==", EQ},					// equal
+        {"\\$[a-z]*",REG},                              //register
+        {"[0-9]*",NUM}                                  //number
+        //{""}                           
 };
 
 #define NR_REGEX (sizeof(rules) / sizeof(rules[0]) )
@@ -56,6 +59,12 @@ typedef struct token {
 Token tokens[32];
 int nr_token;
 
+void strremove(char *des,char *src, int len, int begin){
+    for(int i=0; i<len; i++){
+       des[i]=src[i+begin];
+    }
+}
+
 static bool make_token(char *e) {
 	int position = 0;
 	int i;
@@ -65,23 +74,39 @@ static bool make_token(char *e) {
 
 	while(e[position] != '\0') {
 		/* Try all rules one by one. */
+                printf("haha\n");
 		for(i = 0; i < NR_REGEX; i ++) {
+                        
 			if(regexec(&re[i], e + position, 1, &pmatch, 0) == 0 && pmatch.rm_so == 0) {
 				char *substr_start = e + position;
 				int substr_len = pmatch.rm_eo;
 
-				Log("match rules[%d] = \"%s\" at position %d with len %d: %.*s", i, rules[i].regex, position, substr_len, substr_len, substr_start);
+				Log("match rules[%d] = \"%s\" at position %d with len %d: %.*s", i, rules[i].regex, position, substr_len, substr_len, substr_start);                  
+                                printf("%s %d\n",e,substr_len);
+                                int begin = position;
 				position += substr_len;
 
 				/* TODO: Now a new token is recognized with rules[i]. Add codes
 				 * to record the token in the array `tokens'. For certain types
 				 * of tokens, some extra actions should be performed.
 				 */
-
+                                
+                                
 				switch(rules[i].token_type) {
-					default: panic("please implement me");
+					/*case EQ:
+                                             break;
+                                        case REG:
+                                             break;
+                                        */
+                                        case NOTYPE:
+                                             break;
+                                        default:
+                                             tokens[nr_token].type = rules[i].token_type;
+                                             strremove( tokens[nr_token].str,e,substr_len,begin);
+                                             nr_token++;
+                                             break;//panic("swicth:please implement me");
 				}
-
+                                
 				break;
 			}
 		}
@@ -102,7 +127,12 @@ uint32_t expr(char *e, bool *success) {
 	}
 
 	/* TODO: Insert codes to evaluate the expression. */
-	panic("please implement me");
+	//panic("expr:please implement me");
+        printf("yes\n");
+        for(int i=0;i<nr_token;i++){
+           printf("\\%s\\\n", tokens[i].str);
+        }
 	return 0;
 }
+
 

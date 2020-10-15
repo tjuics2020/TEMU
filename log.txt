@@ -1,2 +1,8 @@
-       0:   3c 01 10 10         lui   $at,   0x1010
-       4:   34 21 10 10         ori   $at,   $at,   0x1010
+[./temu/src/monitor/expr.c,84,make_token] match rules[3] = "\$[a-z]*" at position 0 with len 4: $adf
+[./temu/src/monitor/expr.c,84,make_token] match rules[0] = " +" at position 4 with len 1:  
+[./temu/src/monitor/expr.c,84,make_token] match rules[1] = "\+" at position 5 with len 1: +
+[./temu/src/monitor/expr.c,84,make_token] match rules[0] = " +" at position 6 with len 1:  
+[./temu/src/monitor/expr.c,84,make_token] match rules[4] = "[0-9]*" at position 7 with len 3: 123
+[./temu/src/monitor/expr.c,84,make_token] match rules[4] = "[0-9]*" at position 0 with len 1: 1
+[./temu/src/monitor/expr.c,84,make_token] match rules[2] = "==" at position 1 with len 2: ==
+[./temu/src/monitor/expr.c,84,make_token] match rules[3] = "\$[a-z]*" at position 3 with len 2: $d
