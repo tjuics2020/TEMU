@@ -23,6 +23,10 @@ int getregData(char *name,bool* success) {
                    *success = true;
                    return cpu.gpr[i]._32;
                }
+               else if(strcmp(name,"$pc")==0){
+                   *success = true;
+                   return cpu.pc;
+               }
         }
         
         return 0;

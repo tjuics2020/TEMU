@@ -65,7 +65,7 @@ static int cmd_d(char *args){   //删除监视点
 }
 
 static int cmd_p(char *args){
-        printf("cmd_p:args=%s\n",args);
+        //printf("cmd_p:args=%s\n",args);
         bool success;
         int result=expr(args, &success);
         if( success ){
