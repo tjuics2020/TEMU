@@ -11,6 +11,10 @@ void display_reg();
 
 void display_wp();
 
+void set_a_new_wp(char *);
+
+void free_wp_i(int );
+
 uint32_t expr(char *, bool *);
 
 /* We use the `readline' library to provide more flexibility to read from stdin. */
@@ -58,6 +62,7 @@ static int cmd_d(char *args){   //删除监视点
         int i=0;
         if(arg){
           i=*arg-'0';
+          free_wp_i(i);
           printf("delete %d watch point.\n",i);
           return 0;
         }  
@@ -77,6 +82,33 @@ static int cmd_p(char *args){
         return 0;
 }
 
+static int cmd_w(char *args){
+        set_a_new_wp(args);
+        return 0;
+}
+
+static int cmd_x(char *args){
+        char *pN=strtok(NULL," ");
+        char *pAdd = strtok(NULL," ");
+        printf("cmd_x:arg=%s pAdd=%s\n",pN,pAdd);
+        bool success;
+        success = true;
+        int add = expr(pAdd,&success);
+        if( success==false ){ printf("expression error!\n");return 0; }
+        int n = atoi(pN);
+        if( n == 0) { printf("N error!\n");return 0; }
+        printf("cmd_x:n=%d add=%d\n",n,add);
+        int data = 0;
+        for(int i=0; i<n; i++ ){
+           data = mem_read(add+i,4);
+           if( i%4 == 0&& i!=0 ) printf("\n");
+           printf("%#8x  ",data);
+        }
+        printf("\n");
+        
+        return 0;
+}
+
 static int cmd_info(char *args);
 
 static int cmd_help(char *args);
@@ -92,7 +124,9 @@ static struct {
         { "si","The program will pause after N instructions are executed step by step.the default N is 1", cmd_si },
         { "info","Print register status.Print watch point information", cmd_info },
         { "d", "Delte the watch point.",cmd_d},
-        { "p", "calculate the expression.",cmd_p}
+        { "p", "calculate the expression.",cmd_p},
+        { "w","set a watch point",cmd_w},
+        { "x", "print memory", cmd_x}
 	/* TODO: Add more commands */
 
 };
