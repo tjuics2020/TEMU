@@ -14,6 +14,10 @@ void strremove(char *des,char *src, int len, int begin);
 
 void free_wp_i(int);
 
+uint32_t expr(char *, bool *);
+
+int checkWatchpoints();
+
 void init_wp_pool() {
 	int i;
 	for(i = 0; i < NR_WP; i ++) {
@@ -45,13 +49,15 @@ void display_wp(){
         //printf("watchpoint.c:here print the watchponit!\n");
 }
 
-void set_a_new_wp(char *expr){
+void set_a_new_wp(char *exp){
         WP *wp = new_wp();
         if(wp==NULL){
              printf("no enough space to set watch point.\n");
              return;
         }
-        setexpr(wp,expr);
+        
+        setexpr(wp,exp);
+        
 }
 
 WP* new_wp(){
@@ -65,13 +71,19 @@ WP* new_wp(){
         return p;
 }
 
-void setexpr(WP *wp,char *expr){
-        int len = getstrlen(expr);
+void setexpr(WP *wp,char *exp){
+        int len = getstrlen(exp);
         if(len>256){
             printf("expression is too long!\n");
             return;  
         }
-        strremove(wp->expr,expr,len,0);
+        //计算表达式的值并且储存在结构体的data中
+        bool success;
+        success = true;
+        int data = expr(exp,&success);
+        if( success==false ){ printf("expression error!\n");return;}
+        wp->data = data;
+        strremove(wp->expr,exp,len,0);
         wp->isEmpty = 0;
 }
 
@@ -88,4 +100,25 @@ void free_all(){
 
 void free_wp_i(int i){
         free_wp(&head[i]);
+}
+
+int checkWatchpoints(){
+        WP *p;
+        p = head;
+        int flag = 0;
+        while( p != free_ ){
+               if(!p->isEmpty){
+                  bool success;
+                  success = true;
+                  int newdata = expr(p->expr,&success);
+                  if(p->data != newdata ){
+                     printf("watch points(num:%-3d expr:%s):\nthe old data:%d\nthe new data:%d\n",p->NO,p->expr,p->data,newdata);
+                     p->data = newdata;
+                     flag = 1;
+                  }
+               }
+               p = p->next;
+        }
+        
+        return flag;
 }

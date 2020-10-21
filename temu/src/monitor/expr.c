@@ -9,7 +9,7 @@
 #include <stdio.h>
 
 enum {
-	NOTYPE = 256, EQ,NEQ,REG,PAR,SUB,MULT,DIV,NUM
+	NOTYPE = 256, EQ,NEQ,REG,PAR,SUB,MULT,DIV,OX,NUM
 
 	/* TODO: Add more token types */
 
@@ -34,6 +34,7 @@ static struct rule {
         {"\\-",SUB},                                    // sub      
         {"\\*",MULT},                                   // multiplication
         {"\\/",DIV},                                    // division     只支持整数除法，四舍五入
+        {"[oO0][xX][0-9a-f]{1,}",OX},                   //十六
         {"[0-9]*",NUM}                                  // number
 
 };
@@ -79,8 +80,8 @@ void strremove(char *des,char *src, int len, int begin){
 
 int getstrlen(char *str){
      int i=0;
-     while(str[i+1] != '\0'){i++;}
-     return i+1;
+     while(str[i] != '\0'){i++;}
+     return i;
 }
 
 void ints_to_chars(int num,char *des){
@@ -91,7 +92,13 @@ void ints_to_chars(int num,char *des){
      des[len]='\0';
 }
 
-
+int power(int base,int p){
+    int sum = 1;
+     for(int i=0; i<p; i++){
+          sum = sum*base;
+     }
+    return sum;
+}
 
 static bool make_token(char *e) {
 	int position = 0;
@@ -106,10 +113,10 @@ static bool make_token(char *e) {
 		for(i = 0; i < NR_REGEX; i ++) {
                         
 			if(regexec(&re[i], e + position, 1, &pmatch, 0) == 0 && pmatch.rm_so == 0) {
-				char *substr_start = e + position;
+				//char *substr_start = e + position;
 				int substr_len = pmatch.rm_eo;
 
-				Log("match rules[%d] = \"%s\" at position %d with len %d: %.*s", i, rules[i].regex, position, substr_len, substr_len, substr_start);                  
+				//Log("match rules[%d] = \"%s\" at position %d with len %d: %.*s", i, rules[i].regex, position, substr_len, substr_len, substr_start);                  
                                 int begin = position;
 				position += substr_len;
 
@@ -252,6 +259,23 @@ void cal_onetoken(int pos,bool *success){ //计算某一个token的值   并且�
              ints_to_chars(data,tokens[pos].str);
              init_data = pre_init_data;
              nr_token = pre_nr_token;
+        }
+        else if( tokens[pos].type==OX ){ //
+             
+             int len = getstrlen(tokens[pos].str);
+             for(int i=len-1;i>=2;i--){
+                 int temp;
+                 if(tokens[pos].str[i]<='9'&&tokens[pos].str[i]>=0){
+                      temp = tokens[pos].str[i]-'0';
+                 }
+                 else{
+                      temp = tokens[pos].str[i]-'a'+10;
+                 }
+                 printf("%d\n",data);
+                 data += temp*power(16,len-1-i);
+             }
+             tokens[pos].type = NUM;
+             ints_to_chars(data,tokens[pos].str);
         }
 }
 

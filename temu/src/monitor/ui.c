@@ -90,17 +90,17 @@ static int cmd_w(char *args){
 static int cmd_x(char *args){
         char *pN=strtok(NULL," ");
         char *pAdd = strtok(NULL," ");
-        printf("cmd_x:arg=%s pAdd=%s\n",pN,pAdd);
+        //printf("cmd_x:arg=%s pAdd=%s\n",pN,pAdd);
         bool success;
         success = true;
         int add = expr(pAdd,&success);
         if( success==false ){ printf("expression error!\n");return 0; }
         int n = atoi(pN);
         if( n == 0) { printf("N error!\n");return 0; }
-        printf("cmd_x:n=%d add=%d\n",n,add);
+        //printf("cmd_x:n=%d add=%d\n",n,add);
         int data = 0;
         for(int i=0; i<n; i++ ){
-           data = mem_read(add+i,4);
+           data = mem_read(add+i*4,4);
            if( i%4 == 0&& i!=0 ) printf("\n");
            printf("%#8x  ",data);
         }
