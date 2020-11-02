@@ -6,7 +6,7 @@
    .globl main
    .text
 main:
-   ori  $at,$zero,0xff
+   ori  $at,$t0,0xff
    nop
    nop
    sb   $at,0x3($zero)       # [0x3] = 0xff
