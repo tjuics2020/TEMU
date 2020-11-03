@@ -18,5 +18,6 @@ make_helper(nor);
 make_helper(xor);
 make_helper(or);
 make_helper(multu);
+make_helper(mult);
 
 #endif

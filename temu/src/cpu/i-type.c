@@ -36,6 +36,7 @@ make_helper(ori) {
         //printf("here!:%s\n",REG_NAME(op_sr->reg));
 }
 
+
 make_helper(sw){
         decode_imm_type(instr);
         mem_write(op_src1->val+op_src2->val,4,reg_w(op_dest->reg));
@@ -57,10 +58,17 @@ make_helper(sh){
 
 make_helper(lb){
        decode_imm_type(instr);
-       reg_b(op_dest->reg) = mem_read(op_src1->val+op_src2->val,1);
+       reg_b(op_dest->reg) = mem_read(op_src1->val+(int32_t)op_src2->val,1);
        sprintf(assembly,"lb    %s,   %d(%s)",REG_NAME(op_dest->reg),op_src2->imm,REG_NAME(op_src1->reg));
        
 }
+
+make_helper(lbu){
+       decode_imm_type(instr);
+       reg_b(op_dest->reg) = mem_read(op_src1->val+op_src2->val,1);
+       sprintf(assembly,"lbu    %s,   %d(%s)",REG_NAME(op_dest->reg),op_src2->imm,REG_NAME(op_src1->reg));
+}
+
 
 make_helper(lw){
        decode_imm_type(instr);
@@ -70,8 +78,14 @@ make_helper(lw){
 
 make_helper(lh){
        decode_imm_type(instr);
-       reg_h(op_dest->reg) = mem_read(op_src1->val+op_src2->val,2);
+       reg_h(op_dest->reg) = mem_read(op_src1->val+(int32_t)op_src2->val,2);
        sprintf(assembly,"lh    %s,   %d(%s)",REG_NAME(op_dest->reg),op_src2->imm,REG_NAME(op_src1->reg));
+}
+
+make_helper(lhu){
+       decode_imm_type(instr);
+       reg_h(op_dest->reg) = mem_read(op_src1->val+op_src2->val,2);
+       sprintf(assembly,"lhu    %s,   %d(%s)",REG_NAME(op_dest->reg),op_src2->imm,REG_NAME(op_src1->reg));
 }
 
 make_helper( addi ){   //有符号数立即数加法
