@@ -8,8 +8,9 @@ typedef struct watchpoint {
 	struct watchpoint *next;
 
 	/* TODO: Add more members if necessary */
-
-
+        int isEmpty;
+        int data;
+        char expr[256];           //一条表达式的长度
 } WP;
 
 #endif

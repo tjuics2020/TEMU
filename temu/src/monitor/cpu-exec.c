@@ -11,6 +11,7 @@
 int temu_state = STOP;
 
 void exec(uint32_t);
+int checkWatchpoints();
 
 char assembly[80];
 char asm_buf[128];
@@ -61,6 +62,8 @@ void cpu_exec(volatile uint32_t n) {
 #endif
 
 		/* TODO: check watchpoints here. */
+                int isStop = checkWatchpoints();
+                if(isStop) { temu_state=STOP; }
 
 
 		if(temu_state != RUNNING) { return; }

@@ -24,6 +24,7 @@ static void welcome() {
 
 void init_monitor(int argc, char *argv[]) {
 	/* Perform some global initialization */
+        //printf("\nargc=%d argv[1]=%s\n",argc,argv[1]);
 
 	/* Open the log file. */
 	exec_file = argv[1];
@@ -39,7 +40,7 @@ void init_monitor(int argc, char *argv[]) {
 	welcome();
 }
 
-static void load_entry() {
+static void load_entry() {    //加载文件
 	int ret;
 	FILE *fp = fopen("entry", "rb");
 	Assert(fp, "Can not open 'entry'");
